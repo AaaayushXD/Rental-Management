@@ -4,7 +4,7 @@ import { Navbar } from "./components/Navbar";
 export const App: React.FC = () => {
   return (
     <>
-      <div className="flex w-full h-full gap-2">
+      <div className="flex flex-grow w-full h-full">
         <Navbar />
         <Dashboard />
       </div>
