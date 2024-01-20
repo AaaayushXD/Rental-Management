@@ -17,8 +17,8 @@ import Logo from "../assets/aayushlogo.png";
 import { UserNavProp } from "../models/model";
 
 const variants = {
-  open: { width: "500px" },
-  closed: { width: "20%" },
+  open: { width: "300px" },
+  closed: { width: "150px" },
 };
 
 const navItems = [
@@ -29,17 +29,17 @@ const navItems = [
   },
   {
     name: "Date",
-    url: "/date",
+    url: "#",
     icon: <CalendarDays />,
   },
   {
     name: "Rent",
-    url: "/rent",
+    url: "#",
     icon: <BarChart3 />,
   },
   {
     name: "Contacts",
-    url: "/contacts",
+    url: "#",
     icon: <PhoneCall />,
   },
 ];
@@ -53,56 +53,42 @@ export const Navbar: React.FC = () => {
       <motion.nav
         animate={isOpen ? "open" : "closed"}
         variants={variants}
-        className="min-h-[100dvh] h-full w-[20%] max-w-[250px] bg-[var(--primary-color)] px-5 py-8 relative min-w-[100px] transition-all duration-500 ease-in-out flex-grow "
+        className="min-h-[100dvh] bg-[var(--primary-color)] w-full flex flex-col justify-between items-center px-3 py-8 gap-8"
         style={{ zIndex: 10 }}
       >
-        <div className="flex flex-col items-center justify-between flex-grow w-full gap-10">
-          <div className=" bg-[var(--primary-content)] rounded-full p-3">
-            <img src={Logo} alt="Logo" className="w-[80px] h-[80px] p-4" />
-          </div>
-          <div className="grid w-full gap-4 py-8">
-            {navItems.map((item, index) => {
+        {/* Logo */}
+        <div className="w-full h-[80px] bg-[var(--secondary-content)] px-4 py-2 rounded relative">
+          <img src={Logo} alt="Logo" className="w-full max-h-full" />
+          <ArrowRight className="absolute top-[30%] right-[-30px] bg-[var(--secondary-content)] rounded-full h-[30px] w-[30px] cursor-pointer hover:text-[var(--primary-color)]" />
+        </div>
+        {/* Navigations */}
+        <div className="flex flex-col flex-grow w-full gap-5 py-8">
+          {navItems &&
+            navItems.map((items, index) => {
               return (
-                <div
+                <a
+            s      href={items.url}
                   key={index}
+                  onClick={() => setActiveNavIndex(index)}
                   className={
-                    "p-2 rounded cursor-pointer" +
+                    "flex p-3 rounded space-x-2 md:justify-start " +
                     (activeNavIndex === index
                       ? " bg-[var(--primary-content)] text-[var(--primary-color)] "
-                      : " bg-[var(--primary-light)] text-[var(--primary-content)]")
+                      : " bg-[var(--primary-light)] text-[var(--primary-content)] ") +
+                    (isOpen ? "" : "justify-center")
                   }
-                  onClick={() => setActiveNavIndex(index)}
                 >
-                  <a
-                    href={item.url}
-                    className={
-                      "flex w-full space-x-3 p-2 items-center transition-all duration-300 ease-in-out lg:justify-start " +
-                      (isOpen ? " " : " justify-center")
-                    }
-                  >
-                    <p>{item.icon}</p>
-                    <p
-                      className={
-                        "tracking-wide lg:block " +
-                        (isOpen ? " block" : " hidden")
-                      }
-                    >
-                      {item.name}
-                    </p>
-                  </a>
-                </div>
+                  {items.icon}
+                  <span className={"md:block " + (isOpen ? "block" : "hidden")}>
+                    {items.name}
+                  </span>
+                </a>
               );
             })}
-          </div>
-          <div className="cursor-pointer text-[var(--copy)] hover:text-[var(--primary-content)] transition-all duration-500 ease-in-out">
-            <Settings size={30} />
-          </div>
         </div>
-        <div
-          className="absolute top-[30px] right-[-15px] bg-[var(--secondary-content)] rounded-full p-2 cursor-pointer lg:hidden transition-all ease-in-out duration-300 delay-300"
-          onClick={() => setIsOpen((isOpen) => !isOpen)}
-        >
-          <ArrowRight />
+        {/* Setting */}
+        <div className="flex items-center justify-center w-full">
+          <Settings size={30} />
         </div>
       </motion.nav>
     </>
