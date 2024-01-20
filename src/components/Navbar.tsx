@@ -53,13 +53,16 @@ export const Navbar: React.FC = () => {
       <motion.nav
         animate={isOpen ? "open" : "closed"}
         variants={variants}
-        className="min-h-[100dvh] bg-[var(--primary-color)] w-full flex flex-col justify-between items-center px-3 py-8 gap-8"
+        className="min-h-[100dvh] bg-[var(--primary-color)] w-full flex flex-col justify-between items-center px-3 py-8 gap-8 md:!w-[300px] "
         style={{ zIndex: 10 }}
       >
         {/* Logo */}
         <div className="w-full h-[80px] bg-[var(--secondary-content)] px-4 py-2 rounded relative">
           <img src={Logo} alt="Logo" className="w-full max-h-full" />
-          <ArrowRight className="absolute top-[30%] right-[-30px] bg-[var(--secondary-content)] rounded-full h-[30px] w-[30px] cursor-pointer hover:text-[var(--primary-color)]" />
+          <ArrowRight
+            className="absolute top-[30%] right-[-30px] bg-[var(--secondary-content)] md:hidden rounded-full h-[40px] w-[40px] cursor-pointer hover:text-[var(--primary-color)]"
+            onClick={() => setIsOpen((isOpen) => !isOpen)}
+          />
         </div>
         {/* Navigations */}
         <div className="flex flex-col flex-grow w-full gap-5 py-8">
@@ -67,14 +70,14 @@ export const Navbar: React.FC = () => {
             navItems.map((items, index) => {
               return (
                 <a
-            s      href={items.url}
+                  href={items.url}
                   key={index}
                   onClick={() => setActiveNavIndex(index)}
                   className={
                     "flex p-3 rounded space-x-2 md:justify-start " +
                     (activeNavIndex === index
                       ? " bg-[var(--primary-content)] text-[var(--primary-color)] "
-                      : " bg-[var(--primary-light)] text-[var(--primary-content)] ") +
+                      : " bg-[var(--primary-light)] text-[var(--primary-content)] hover:bg-[var(--primary-dark)] ") +
                     (isOpen ? "" : "justify-center")
                   }
                 >
@@ -95,17 +98,9 @@ export const Navbar: React.FC = () => {
   );
 };
 
-export const UserNav: React.FC<UserNavProp> = (props) => {
+export const UserNav: React.FC = () => {
   return (
-    <div className="w-full h-[80px] flex justify-between items-center px-5 gap-5 flex-grow">
-      <div>
-        <h1 className="text-xl">
-          Hello,{" "}
-          <span className="font-bold text-[var(--primary-color)] tracking-wider">
-            {props.name}
-          </span>
-        </h1>
-      </div>
+    <div className="w-full h-[80px] flex justify-end items-center px-5 gap-5 flex-grow">
       <div className="flex gap-3">
         <div>
           <Bell />
