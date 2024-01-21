@@ -14,7 +14,7 @@ import { useState } from "react";
 //TODO: Logo needed. this is NOT the actual LOGO.
 import Logo from "../assets/aayushlogo.png";
 
-import { UserNavProp } from "../models/model";
+// import { UserNavProp } from "../models/model";
 
 const variants = {
   open: { width: "300px" },
@@ -90,7 +90,7 @@ export const Navbar: React.FC = () => {
             })}
         </div>
         {/* Setting */}
-        <div className="flex items-center justify-center w-full">
+        <div className="flex items-center justify-center w-full hover:text-[var(--copy)] cursor-pointer">
           <Settings size={30} />
         </div>
       </motion.nav>
