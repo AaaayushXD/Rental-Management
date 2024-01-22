@@ -11,7 +11,7 @@ const latestBill = [
     month: "Mangsir",
     rent: "7000",
     electricity: "185",
-    paidTo: "Anish",
+    paidTo: "Anish", 
   },
   {
     id: 3,

@@ -1,12 +1,13 @@
 import {
-  ArrowRight,
   BarChart3,
   Bell,
   CalendarDays,
   Home,
+  Menu,
   PhoneCall,
   Settings,
   UserIcon,
+  X,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -17,8 +18,8 @@ import Logo from "../assets/aayushlogo.png";
 // import { UserNavProp } from "../models/model";
 
 const variants = {
-  open: { width: "300px" },
-  closed: { width: "150px" },
+  open: { opacity: "100%" },
+  closed: { opacity: "0%" },
 };
 
 const navItems = [
@@ -44,71 +45,113 @@ const navItems = [
   },
 ];
 
-export const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface NavbarProps {
+  activeNav: boolean;
+}
+
+export const Navbar: React.FC<NavbarProps> = (props) => {
   const [activeNavIndex, setActiveNavIndex] = useState(0);
 
   return (
     <>
-      <motion.nav
-        animate={isOpen ? "open" : "closed"}
-        variants={variants}
-        className="min-h-[100dvh] bg-[var(--primary-color)] w-full flex flex-col justify-between items-center px-3 py-8 gap-8 md:!w-[300px] "
-        style={{ zIndex: 10 }}
+      <div
+        className={
+          "w-full h-full fixed top-[80px] " +
+          (props.activeNav ? " " : " hidden")
+        }
       >
-        {/* Logo */}
-        <div className="w-full h-[80px] bg-[var(--secondary-content)] px-4 py-2 rounded relative">
-          <img src={Logo} alt="Logo" className="w-full max-h-full" />
-          <ArrowRight
-            className="absolute top-[30%] right-[-30px] bg-[var(--secondary-content)] md:hidden rounded-full h-[40px] w-[40px] cursor-pointer hover:text-[var(--primary-color)]"
-            onClick={() => setIsOpen((isOpen) => !isOpen)}
-          />
-        </div>
-        {/* Navigations */}
-        <div className="flex flex-col flex-grow w-full gap-5 py-8">
-          {navItems &&
-            navItems.map((items, index) => {
-              return (
-                <a
-                  href={items.url}
-                  key={index}
-                  onClick={() => setActiveNavIndex(index)}
-                  className={
-                    "flex p-3 rounded space-x-2 md:justify-start " +
-                    (activeNavIndex === index
-                      ? " bg-[var(--primary-content)] text-[var(--primary-color)] "
-                      : " bg-[var(--primary-light)] text-[var(--primary-content)] hover:bg-[var(--primary-dark)] ") +
-                    (isOpen ? "" : "justify-center")
-                  }
-                >
-                  {items.icon}
-                  <span className={"md:block " + (isOpen ? "block" : "hidden")}>
-                    {items.name}
-                  </span>
-                </a>
-              );
-            })}
-        </div>
-        {/* Setting */}
-        <div className="flex items-center justify-center w-full hover:text-[var(--copy)] cursor-pointer">
-          <Settings size={30} />
-        </div>
-      </motion.nav>
+        <motion.nav
+          animate={props.activeNav ? "open" : "closed"}
+          variants={variants}
+          className={
+            "bg-[var(--primary-color)] w-full flex flex-col justify-between items-center px-3 py-8 gap-8 transition-opacity ease-in-out duration-300 delay-100"
+          }
+        >
+          {/* Navigations */}
+          <div className="flex flex-col flex-grow w-full gap-5 py-8">
+            {navItems &&
+              navItems.map((items, index) => {
+                return (
+                  <a
+                    href={items.url}
+                    key={index}
+                    onClick={() => setActiveNavIndex(index)}
+                    className={
+                      "flex p-3 rounded space-x-2 md:justify-start " +
+                      (activeNavIndex === index
+                        ? " bg-[var(--primary-content)] text-[var(--primary-color)] "
+                        : " bg-[var(--primary-light)] text-[var(--primary-content)] hover:bg-[var(--primary-dark)] ")
+                    }
+                  >
+                    {items.icon}
+                    <span className={"md:block "}>{items.name}</span>
+                  </a>
+                );
+              })}
+          </div>
+          {/* Setting */}
+          <div className="flex items-center justify-center w-full hover:text-[var(--copy)] cursor-pointer">
+            <Settings size={30} />
+          </div>
+        </motion.nav>
+      </div>
     </>
   );
 };
 
 export const UserNav: React.FC = () => {
+  const [activeNav, setActiveNav] = useState<boolean>(false);
+  const [navBg, setNavBg] = useState<boolean>(false);
+
+  const changeColor = () => {
+    if (window.scrollY >= 10) {
+      setNavBg(true);
+    } else {
+      setNavBg(false);
+    }
+  };
+
+  window.addEventListener("scroll", changeColor);
+
   return (
-    <div className="w-full h-[80px] flex justify-end items-center px-5 gap-5 flex-grow">
-      <div className="flex gap-3">
-        <div>
-          <Bell />
-        </div>
-        <div>
-          <UserIcon />
+    <>
+      <div
+        className={
+          "w-full max-h-[80px] fixed top-0 left-0 transition-all ease-in-out duration-500 delay-100 select-none " +
+          (navBg ? " bg-[var(--foreground)]" : " ")
+        }
+      >
+        <div className="w-full h-[80px] flex justify-between items-center px-5 gap-5 py-3">
+          <div
+            className="transition duration-300 ease-in-out delay-100 cursor-pointer"
+            onClick={() => setActiveNav((activeNav) => !activeNav)}
+          >
+            {activeNav ? (
+              <X
+                size={30}
+                className="text-[var(--secondary-dark)] hover:text-[var(--secondary-color)]"
+              />
+            ) : (
+              <Menu
+                size={30}
+                className="text-[var(--primary-dark)] hover:text-[var(--primary-color)]"
+              />
+            )}
+          </div>
+          <div>
+            <img src={Logo} alt="Logo" className="max-h-[60px] p-2" />
+          </div>
+          <div className="flex items-center gap-3">
+            <div>
+              <Bell size={20} />
+            </div>
+            <div className="p-2 bg-blue-500 rounded-full">
+              <UserIcon size={20} />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+      <Navbar activeNav={activeNav} />
+    </>
   );
 };
