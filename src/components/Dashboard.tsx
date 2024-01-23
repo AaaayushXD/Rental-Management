@@ -11,7 +11,7 @@ export const Dashboard = () => {
     >
       <UserNav />
       <div className="flex flex-col items-center justify-center w-full h-full max-w-[2500px] gap-8">
-        <div className="grid w-full h-full gap-8 md:grid-cols-3">
+        <div className="grid w-full h-full grid-cols-3 gap-8">
           <GrettingCard />
           <RentCard />
         </div>

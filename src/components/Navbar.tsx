@@ -77,7 +77,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
                     key={index}
                     onClick={() => setActiveNavIndex(index)}
                     className={
-                      "flex p-3 rounded space-x-2 md:justify-start " +
+                      "flex p-4 rounded space-x-2 md:justify-start " +
                       (activeNavIndex === index
                         ? " bg-[var(--primary-content)] text-[var(--primary-color)] "
                         : " bg-[var(--primary-light)] text-[var(--primary-content)] hover:bg-[var(--primary-dark)] ")
